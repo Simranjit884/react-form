@@ -8,14 +8,15 @@ const SimpleInput = (props) => {
 
   const onNameInputChangeHandler = (event) => {
     setEnteredInput(event.target.value);
-    console.log(enteredInput);
+    if (enteredInput.trim() !== '') {
+      setEnteredNameIsValid(true);
+    }
   };
 
   const onBlurHandler = (event) => {
     setEnteredNametouched(true);
     if (enteredInput.trim() === "") {
       setEnteredNameIsValid(false);
-      return;
     }
   };
 
@@ -27,7 +28,7 @@ const SimpleInput = (props) => {
       setEnteredNameIsValid(false);
       return;
     }
-    
+
     setEnteredNameIsValid(true);
     const inputRefValue = nameInputRef.current.value;
     console.log(inputRefValue);
