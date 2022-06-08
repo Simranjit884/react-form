@@ -1,11 +1,6 @@
-import { useState } from "react";
 import useInput from "../hooks/use-input";
 
 const SimpleInput = (props) => {
-  const [enteredEmail, setEnteredEmail] = useState("");
-
-  const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
-
   const {
     hasError: nameInputHasError,
     enteredInput: enteredName,
@@ -15,31 +10,36 @@ const SimpleInput = (props) => {
     reset: resetName,
   } = useInput((value) => value.trim() !== "");
 
-  const enteredEmailIsValid =
-    enteredEmail.trim() !== "" && enteredEmail.includes("@");
-  const enteredEmailIsInvalid = enteredEmailTouched && !enteredEmailIsValid;
+  const {
+    hasError: emailInputHasError,
+    enteredInput: enteredEmail,
+    enteredInputlIsValid: enteredEmailIsValid,
+    inputBlurHandler: emailBlurHandler,
+    valueChangeHandler: emailChangeHandler,
+    reset: resetEmail,
+  } = useInput((value) => value.trim() !== "" && value.includes("@"));
 
   let formIsValid = false;
-  if (enteredNameIsValid) {
+  if (enteredNameIsValid && enteredEmailIsValid) {
     formIsValid = true;
   }
 
   const onFormSubmitHandler = (event) => {
     event.preventDefault();
-    setEnteredEmailTouched(true);
 
     if (!enteredNameIsValid && !enteredEmailIsValid) {
       return;
     }
 
     resetName();
+    resetEmail();
   };
 
   const inputNameFormClass = nameInputHasError
     ? "form-control invalid"
     : "form-control";
 
-  const inputEmailFormClass = enteredEmailIsInvalid
+  const inputEmailFormClass = emailInputHasError
     ? "form-control invalid"
     : "form-control";
 
@@ -56,6 +56,19 @@ const SimpleInput = (props) => {
         />
         {nameInputHasError && (
           <p className="error-text">Name must not be empty.</p>
+        )}
+      </div>
+      <div className={inputEmailFormClass}>
+        <label htmlFor="email"> Your Email</label>
+        <input
+          type="text"
+          id="email"
+          value={enteredEmail}
+          onBlur={emailBlurHandler}
+          onChange={emailChangeHandler}
+        />
+        {emailInputHasError && (
+          <p className="error-text">Please enter a valid email.</p>
         )}
       </div>
       <div className="form-actions">
