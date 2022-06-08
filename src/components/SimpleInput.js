@@ -20,7 +20,7 @@ const SimpleInput = (props) => {
   const enteredEmailIsInvalid = enteredEmailTouched && !enteredEmailIsValid;
 
   let formIsValid = false;
-  if (enteredNameIsValid && enteredEmailIsValid) {
+  if (enteredNameIsValid) {
     formIsValid = true;
   }
 
